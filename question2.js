@@ -1,44 +1,60 @@
-    let result=document.createElement("result")
-    let count = 0;
-    let result_2 = document.createElement("result_2")
-    document.getElementById("add").addEventListener("click",function(){
-        let list = document.getElementById("item").value.toLowerCase()
-
-        if(list === ""){
-            alert("enter item")
-            return;
+let item=document.getElementById("item")
+let add=document.getElementById("add")
+let remove=document.getElementById("remove")
+let list=document.getElementById("list")
+//let todo_list=[]
+let numberofItems=0;
+let numberofRemoves=0;
+let itemremoved= document.createElement("p")
+let numberofremoved=document.createElement("p")
+    
+function style(){
+    let items=document.querySelectorAll("#list li")
+    for(let i=0;i<items.length;i++){
+        items[i].style.background="white"
+        if((i+1)%2==0){
+            items[i].style.background="yellow"
         }
+    }    
+}
 
-        let li = document.createElement("li");
-        li.textContent = list;
-        document.getElementById("list").appendChild(li);
-        document.getElementById("item").value = ""
-    })
+function addItem(task){
+// todo_list[numberofItems]=task;
+   let li = document.createElement("li");
+   li.textContent=task;
+   list.appendChild(li)
+    numberofItems++;
+   style()
+}
 
-    document.getElementById("remove").addEventListener("click",function(){
-        let list = document.getElementById("item").value.toLowerCase()
-        if(list === ""){
-            alert("Enter item to remove");
-            return;
+function removeItem(task){ 
+    let items=document.querySelectorAll("#list li")
+    for(let i=0;i<items.length;i++){
+        if(items[i].textContent.toLowerCase()==task.toLowerCase()){
+            /*if(i%2==0){
+                items[i].style.background="white"
+            }*/
+            numberofRemoves++;
+            items[i].remove()
+            break;
         }
-        let items = document.querySelectorAll("#list li");
-        for(let i = 0;i < items.length;i++){
-            if(items[i].textContent.toLowerCase()=== list){
-                items[i].remove();
-                break;
-            }
-        }
-        result_2.textContent = `you have removed ${list} from list`
-        result_2.style.color = "red"
-        result_2.style.fontWeight = "bold";
-        document.getElementById("result").appendChild(result_2);
+    }
+    itemremoved.innerHTML=task;
+    document.body.appendChild(itemremoved)
+    itemremoved.style.color="red"
+}
 
-        count++;
+add.addEventListener("click",function(){
+    addItem(item.value)
+    item.value=""
+})
 
-        result.textContent = `you have removed ${count} from list`
-        result.style.color = "green"
-        result.style.fontWeight = "bold";
-        document.getElementById("result").appendChild(result);
-
-
-    })
+remove.addEventListener("click",function(){
+    removeItem(item.value)
+    item.value=""
+  
+    numberofremoved.innerHTML=`(${numberofRemoves}) item removed`
+    document.body.appendChild(numberofremoved)
+    numberofremoved.style.color="green"
+    style();
+})
